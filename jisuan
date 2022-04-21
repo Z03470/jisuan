@@ -1,0 +1,560 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<iostream>
+#include <stack>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <math.h>
+
+using namespace std;
+
+class A_1//四则运算
+{
+public:
+	A_1(char *a);
+	void hhouz();
+	double jshouz();
+	void cq();
+	~A_1();
+private:
+	char a[20];
+	stack<char>  s1;
+	vector<string> A;
+	stack<float> s2;
+	double jieguo;
+};
+A_1::A_1(char *b)
+{
+	strcpy(a,b);
+}
+A_1::~A_1()
+{
+}
+void A_1::hhouz()
+{
+for(int i=0;a[i]!='\0';i++)
+  {
+      if((a[i]>='0' && a[i]<='9')||a[i]=='.')
+      {
+         string str;
+         for(;(a[i]>='0' && a[i]<='9')||a[i]=='.';i++)
+         {
+             char s=a[i];
+			 str.push_back(s);
+         }
+     A.push_back(str);
+         i--;
+      }else if(s1.empty())
+      {
+          s1.push(a[i]);
+      }else if(a[i]=='+' || a[i]=='-')
+      {
+          while(!s1.empty()){
+              if(s1.top()=='+' || s1.top()=='-'||s1.top()=='*' || s1.top()=='/'){
+				  char x;
+				  x=s1.top();
+				  s1.pop();
+                  string str;
+				  str.push_back(x);
+                 A.push_back(str);
+               }else break;
+          }
+          s1.push(a[i]);
+      }else if(a[i]=='*' || a[i]=='/')
+      {
+          while(!s1.empty()){
+              if(s1.top()=='*' || s1.top()=='/'){
+				  char x;
+				  x=s1.top();
+				  s1.pop();
+                  string str;
+				  str.push_back(x);
+                  A.push_back(str);
+               }else break;
+          }
+          s1.push(a[i]);
+      }else if(a[i]==')')
+      {
+          while(!s1.empty()){
+              if(s1.top()=='('){
+                  s1.pop();
+                  break;
+              }
+				  char x;
+				  x=s1.top();
+				  s1.pop();
+                  string str;
+				  str.push_back(x);
+                 A.push_back(str);
+          }
+      }else if(a[i]=='(')
+      {
+          s1.push(a[i]);
+      }
+  }
+  while(!s1.empty()){
+	  char x;
+	  x=s1.top();
+	  s1.pop();
+      string str;
+	  str.push_back(x);
+     A.push_back(str);
+  }
+  
+}
+double A_1::jshouz()
+{
+  hhouz();
+  for(int i=0;i<A.size();i++)
+  {
+      stringstream s(A[i]);
+      double t;
+      if(s>>t)
+      {
+          s2.push(t);
+      }else if(A[i]=="+"||A[i]=="-"||A[i]=="*"||A[i]=="/")
+      {
+		  double x=s2.top();
+		  s2.pop();
+		   double y=s2.top();
+		  s2.pop();
+          if(A[i]=="+")
+          {
+              s2.push(y+x);
+          }else if(A[i]=="-"){
+              s2.push(y-x);
+          }else if(A[i]=="*"){
+              s2.push(y*x);
+          }else if(A[i]=="/"){
+              s2.push(y/x);
+          }
+      }
+  }
+ double z=s2.top();
+  s2.pop();
+  jieguo = z;
+  return jieguo;
+}
+void A_1::cq()
+{
+    memset(a,'/0',sizeof(a));
+    A.clear();
+}
+
+
+class A_2//平方
+{
+  public:
+	  A_2( double a);
+	  double jisuan();
+	  ~A_2();
+  private:
+	 float x;
+};
+A_2::A_2( double a)
+{
+	x=a;
+}
+ double A_2::jisuan()
+{
+	return x*x;
+}
+A_2::~A_2()
+{
+}
+
+
+class A_3//立方
+{
+  public:
+	  A_3( double a);
+	  double jisuan();
+	  ~A_3();
+  private:
+	 float x;
+};
+A_3::A_3( double a)
+{
+	x=a;
+}
+ double A_3::jisuan()
+{
+	return x*x*x;
+}
+A_3::~A_3()
+{
+}
+
+
+class A_4//开平方
+{
+  public:
+	  A_4( double xx);
+	 double jisuan();
+	  ~A_4();
+  private:
+	 double x;
+};
+A_4::A_4( double xx)
+{
+	x=xx;
+}
+ double A_4::jisuan()
+{
+	return sqrt(x);
+}
+A_4::~A_4()
+{
+}
+
+
+class A_5//开立方
+{
+  public:
+	  A_5( double xx);
+	 double jisuan();
+	  ~A_5();
+  private:
+	 double x;
+};
+A_5::A_5(double xx)
+{
+	x=xx;
+}
+ double A_5::jisuan()
+{
+	return pow(x,1.0/3);
+}
+A_5::~A_5()
+{
+}
+
+
+class A_6
+{
+  public:
+	  A_6(int a,int b);
+	  void jisuan();
+	  ~A_6();
+  private:
+	 char a[1000];
+	 int n,x;
+};
+A_6::A_6(int a,int b)
+{
+	n=a;
+	x=b;
+}
+void A_6::jisuan()
+{
+	int y=0;
+    char z='A'; 
+    while (n!=0)
+    {   
+          y++;
+             a[y]=n%x;
+          n=n/x;
+          if (a[y]>9) a[y]=z+(a[y]-10); 
+          else a[y]=a[y]+'0';
+    }
+    for (int i=y;i>0;i--)
+	{
+		cout<<a[i];
+	}
+	cout<<endl;
+}
+A_6::~A_6()
+{
+}
+
+
+class A_7
+{
+  public:
+	  A_7(char *aa,int mm);
+	  void JISUAN();
+	  ~A_7();
+  private:
+	 char a[10000];
+	 int m;
+};
+A_7::A_7(char *aa,int mm)
+{
+	strcpy(a,aa);
+	m=mm;
+}
+void A_7::JISUAN()
+{
+   int t=0;
+   for (int i=0;i<strlen(a);i++)
+   {
+        t*=m;
+        if (a[i]=='A'||a[i]=='B'||a[i]=='C'||a[i]=='D'||a[i]=='E'||a[i]=='F')
+        {
+            t=t+(a[i]-'A'+10);
+        }
+        else
+        {
+            t=t+(a[i]-'0');
+        }
+   }
+  cout<<t<<endl;
+}
+A_7::~A_7()
+{
+}
+
+
+class A_8
+{
+  public:
+	A_8( double xx);
+	  void JISUAN();//sin
+	  void JISUAN2();//cos
+	  void JISUAN3();//tan
+	  ~A_8();
+  private:
+	 double x;
+};
+A_8::A_8( double  xx)
+{
+	x=xx;
+}
+void A_8::JISUAN()
+{
+	cout<<sin(x)<<endl;
+}
+void A_8::JISUAN2()
+{
+	cout<<cos(x)<<endl;
+}
+void A_8::JISUAN3()
+{
+	cout<<tan(x)<<endl;
+}
+A_8::~A_8()
+{
+}
+
+class A_9//开立方
+{
+  public:
+	  A_9( double xx,double yy);
+	 double jisuan();
+	  ~A_9();
+  private:
+	 double x;
+	 double y;
+};
+A_9::A_9(double xx,double yy)
+{
+	x=xx;
+	y=yy;
+}
+ double A_9::jisuan()
+{
+	return pow(x,y);
+}
+A_9::~A_9()
+{
+}
+
+
+
+void menu()
+{
+	cout << "=====================" << endl;
+	cout << endl;
+	cout << " ****计算器****" << endl;
+	cout << endl;
+	cout << " --1.加减乘除混合运算-------" << endl;
+	cout << endl;
+	cout << " --2.方的计算----" << endl;
+	cout << endl;
+	cout << " --3.进制转换--------" << endl;
+	cout << endl;
+	cout << " --4.三角函数--------" << endl;
+	cout << endl;
+	cout << "********************************" << endl;
+}
+
+
+int main()
+{
+	menu();
+	while(1)
+  {
+	int x,a,b;
+		cout << endl;
+	cout<<"请选择功能："<<endl;
+		cout << endl;
+	cin>>x;
+	switch(x)
+	{
+	case(1):
+		{
+		  char n[20];
+		  cout<<"请输入表达式：";
+	      cin>>n;
+	      A_1 cA_1(n);
+	      cout<<cA_1.jshouz()<<endl;
+		  cA_1.cq();
+		}
+		break;
+	case(2):
+		{
+			cout<<"--1.平方--------";
+				cout << endl;
+			cout<<"--2.立方--------";
+				cout << endl;
+			cout<<"--3.平方根--------";
+				cout << endl;
+			cout<<"--4.立方根--------";
+				cout << endl;
+			cout<<"--5.n方------";
+				cout << endl;
+			cout<<"--6.结束使用此项功能------";
+				cout << endl;
+			cin>>a;
+			switch(a)
+			{
+			case 1:
+				{
+			double n;
+			cout<<"请输入一个数：";
+			cin>>n;
+			A_2 cA_2(n);
+			cout<<cA_2.jisuan()<<endl;
+		        }
+				break;
+			case 2:
+				{
+					double n;
+			cout<<"请输入一个数：";
+			cin>>n;
+			A_3 cA_3(n);
+			cout<<cA_3.jisuan()<<endl;
+				}
+				break;
+			case 3:
+				{
+					double n;
+			cout<<"请输入一个数：";
+			cin>>n;
+			A_4 cA_4(n);
+			cout<<cA_4.jisuan()<<endl;
+
+				}
+				break;
+			case 4:	
+				{
+				double n;
+			cout<<"请输入一个数：";
+			cin>>n;
+			A_5  cA_5(n);
+			cout<<cA_5.jisuan()<<endl;
+				}
+				 break;
+			case 5:
+				{
+				double n,a;
+			cout<<"请输入2个数：";
+			cin>>n;
+			cin>>a;
+			A_9  cA_9(n,a);
+			cout<<cA_9.jisuan()<<endl;
+
+				}
+				break;
+			case 6:
+				{
+					break;
+				}
+		}
+	
+
+		}
+		break;
+	case(3):
+		{
+				cout << endl;
+			cout<<"--1.进制1   10进制转化为N进制--------";
+				cout << endl;
+			cout<<"--2.进制2   N进制转化为10进制--------";
+				cout << endl;
+			cout<<"--3.结束使用此项功能------";
+				cout << endl;
+			cin>>b;
+			switch(b)
+			{
+			case 1:
+				{
+					int n;
+			int M;
+			cout<<"请输入一个数：";
+			cin>>n;
+			cout<<"请输入转换的进制：";
+			cin>>M;
+			A_6 cA_6(n,M);
+			cA_6.jisuan();
+
+				}
+				break;
+			case 2:
+				{
+					int M;
+			cout<<"请输入进制：";
+			cin>>M;
+			char n[10000];
+			cout<<"请输入一个数：";
+			cin>>n;
+		    A_7 cA_7(n,M);
+			cA_7.JISUAN();
+
+				}
+				break;
+			case 3:
+				{
+					break;
+				}
+			}
+
+           
+		}
+		break;
+	case(4):
+		{
+		 double n;
+			string x;
+			cout<<"请输入一个数：";
+			cin>>n;
+			cout<<"请输入三角函数：";
+			cin>>x;
+			if(x=="sin")
+			{
+				A_8 cA_8(n);
+			    cA_8.JISUAN();
+			}else if(x=="cos")
+			{
+				A_8 cA_8(n);
+			    cA_8.JISUAN2();
+			}
+			else if(x=="tan")
+			{
+				A_8 cA_8(n);
+			    cA_8.JISUAN3();
+			}
+			
+		}
+		break;
+	case(6):
+		{
+			break;
+		}
+		break;
+	 }
+	}
+}
+
+
